@@ -10,6 +10,7 @@ func main() {
 	/*
 		DB CONN IN HERE
 	*/
+
 	router.InitRouter()
 	router.Start("0.0.0.0:5000")
 }

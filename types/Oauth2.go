@@ -14,3 +14,6 @@ type GHAccessResponse struct {
 	Scope       string `json:"scope"`
 	TokenType   string `json:"token_type"`
 }
+type AuthToken struct {
+	Access_token string
+}

@@ -1,39 +1,39 @@
 package handlers
 
 import (
+	"fmt"
 	"github.com/EraldCaka/github-authentication-app/internal/services"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
 
-func LogoutUser(ctx *gin.Context) {
-	/*
-		Soon to add!
-	*/
-	ctx.JSON(http.StatusOK, gin.H{"status": "success"})
-}
-func GitHubOAuth(ctx *gin.Context) {
-
-	code := ctx.Query("code")
-
-	if code == "" {
+func GithubUser(ctx *gin.Context) {
+	cookie, err := ctx.Cookie("Authorization")
+	if err != nil {
 		ctx.JSON(http.StatusUnauthorized, gin.H{"status": "fail", "message": "Authorization code not provided!"})
 		return
 	}
 
-	tokenRes, err := services.GetGitHubOauthToken(code)
+	user, err := services.GetGitHubUser(cookie)
 	if err != nil {
-		ctx.JSON(http.StatusBadGateway, gin.H{"status": "fail", "message": "Failed to retrieve OAuth token"})
+		ctx.JSON(http.StatusUnauthorized, gin.H{"status": "fail", "message": "Failed to get GitHub user"})
 		return
 	}
 
-	githubUser, err := services.GetGitHubUser(tokenRes.Access_token)
+	ctx.JSON(http.StatusOK, gin.H{"status": "success", "user": user})
+}
 
-	ctx.SetCookie("Authentication", tokenRes.Access_token, 60*60*24, "/", "localhost", false, false)
+func UserStarredRepositories(ctx *gin.Context) {
+	cookie, err := ctx.Cookie("Authorization")
 	if err != nil {
-		ctx.JSON(http.StatusBadGateway, gin.H{"status": "fail", "message": "Failed to retrieve user information from GitHub"})
+		ctx.JSON(http.StatusUnauthorized, gin.H{"status": "fail", "message": "Authorization code not provided!"})
 		return
 	}
-
-	ctx.JSON(http.StatusOK, gin.H{"status": "success", "user": githubUser})
+	repos, err := services.GetUserStarredRepos(cookie)
+	if err != nil {
+		ctx.JSON(http.StatusUnauthorized, gin.H{"status": "fail", "message": "Failed to get user repositories!"})
+		return
+	}
+	fmt.Println(repos)
+	ctx.JSON(http.StatusOK, gin.H{"status": "success", "repos": repos})
 }
