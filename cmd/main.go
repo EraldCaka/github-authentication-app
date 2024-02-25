@@ -7,9 +7,11 @@ import (
 
 func main() {
 	util.InitEnvironmentVariables()
-	/*
-		DB CONN IN HERE
-	*/
+	//dbConn, err := db.NewPGInstance(context.Background())
+	//if err != nil {
+	//	log.Fatalf("could not initialize database connection: %s", err)
+	//}
+	//fmt.Println(dbConn)
 
 	router.InitRouter()
 	router.Start("0.0.0.0:5000")

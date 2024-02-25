@@ -1,2 +1,3 @@
 DROP TABLE IF EXISTS commits;
+DROP TABLE IF EXISTS starred_repos;
 DROP TABLE IF EXISTS users;

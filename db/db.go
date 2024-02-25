@@ -1,32 +1,39 @@
 package db
 
 import (
-	"database/sql"
+	"context"
 	"github.com/EraldCaka/github-authentication-app/util"
-	_ "github.com/lib/pq"
+	"github.com/jackc/pgx/v5/pgxpool"
+	"log"
+	"sync"
 )
 
-type database struct {
-	db *sql.DB
+type Postgres struct {
+	db *pgxpool.Pool
 }
 
-func NewPostgres() (*database, error) {
-	db, err := sql.Open("postgres", util.DB_URL)
-	if err != nil {
-		return nil, err
-	}
+var (
+	pgInstance *Postgres
+	pgOnce     sync.Once
+)
 
-	return &database{db: db}, nil
+func NewPGInstance(ctx context.Context) (*Postgres, error) {
+	pgOnce.Do(func() {
+		db, err := pgxpool.New(ctx, util.DB_URL)
+		if err != nil {
+			log.Println("Unable to connect to Postgres Db: %w", err)
+			return
+		}
+		pgInstance = &Postgres{db}
+	})
+
+	return pgInstance, nil
 }
 
-func (d *database) GetDB() *sql.DB {
-	return d.db
+func (pg *Postgres) Ping(ctx context.Context) error {
+	return pg.db.Ping(ctx)
 }
 
-func (d *database) Ping() error {
-	return d.db.Ping()
-}
-
-func (d *database) Close() {
-	d.db.Close()
+func (pg *Postgres) Close() {
+	pg.db.Close()
 }

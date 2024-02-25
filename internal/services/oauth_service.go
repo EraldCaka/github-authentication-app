@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
-	"github.com/EraldCaka/github-authentication-app/types"
+	"github.com/EraldCaka/github-authentication-app/internal/types"
 	"github.com/EraldCaka/github-authentication-app/util"
 	"io"
 	"net/http"
@@ -28,7 +28,6 @@ func GetGitHubOauthToken(code string) (*types.AuthToken, error) {
 		return nil, err
 	}
 
-	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 	client := http.Client{
 		Timeout: time.Second * 30,
 	}

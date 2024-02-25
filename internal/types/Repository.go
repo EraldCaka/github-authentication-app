@@ -121,3 +121,19 @@ type Permissions struct {
 	Triage   bool `json:"triage"`
 	Pull     bool `json:"pull"`
 }
+type RepositoryDB struct {
+	ID        int    `json:"_id,omitempty"`
+	UserId    int    `json:"user_id"`
+	RepoName  string `json:"repo_name"`
+	RepoOwner string `json:"repo_owner"`
+}
+type RepositoryRes struct {
+	UserId    int    `json:"user_id"`
+	RepoName  string `json:"repo_name"`
+	RepoOwner string `json:"repo_owner"`
+}
+type RepositoryReq struct {
+	UserId    int    `json:"user_id"`
+	RepoName  string `json:"repo_name"`
+	RepoOwner string `json:"repo_owner"`
+}

@@ -1,6 +1,9 @@
 package types
 
-import "time"
+import (
+	"context"
+	"time"
+)
 
 type User struct {
 	Login             string    `json:"login"`
@@ -37,7 +40,25 @@ type User struct {
 	UpdatedAt         time.Time `json:"updated_at"`
 }
 
-func ParseTime(timeStr string) time.Time {
-	t, _ := time.Parse(time.RFC3339, timeStr)
-	return t
+type UserDB struct {
+	ID       int    `json:"_id,omitempty"`
+	Name     string `json:"name"`
+	Username string `json:"username"`
+	ImgUrl   string `json:"img_url"`
+}
+type UserReq struct {
+	Name     string `json:"name"`
+	Username string `json:"username"`
+	ImgUrl   string `json:"img_url"`
+}
+type UserRes struct {
+	Name     string `json:"name"`
+	Username string `json:"username"`
+	ImgUrl   string `json:"img_url"`
+}
+type UserRepository interface {
+	CreateUser(ctx context.Context, user *UserDB) (*UserRes, error)
+}
+type UserService interface {
+	CreateUser(c context.Context, req *UserReq) (*UserRes, error)
 }

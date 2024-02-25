@@ -4,14 +4,17 @@ export
 build:
 	@go build -o bin/api cmd/main.go
 
-run: build
+run: build drop migrate
 	@./bin/api
 
 migrate:
-	@migrate -path ./db/migrations -database "$(DB_LINK)" -verbose up
+	@migrate -path db/migrations -database "$(DB_URL)" -verbose up
 
 drop:
-	@migrate -path db/migrations -database "$(DB_LINK)" -verbose down
+	@migrate -path db/migrations -database "$(DB_URL)" -verbose down
 
 create-migration-sql:
 	@migrate create -ext sql -dir db/migrations github_user_table_and_commit_history_table
+
+migrate-force-version:
+	@migrate -path ./db/migrations -database "$(DB_LINK)" -verbose force 20240224023216
