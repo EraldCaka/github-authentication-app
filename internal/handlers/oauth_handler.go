@@ -36,5 +36,5 @@ func GitHubOAuth(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadGateway, gin.H{"status": "fail", "message": "Failed to store user data in the db"})
 		return
 	}
-	ctx.JSON(http.StatusOK, gin.H{"status": "success", "user": githubUser})
+	ctx.Redirect(http.StatusFound, "http://localhost:5173/user")
 }

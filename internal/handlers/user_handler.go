@@ -18,7 +18,7 @@ func GithubUser(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{"status": "success", "user": user})
+	ctx.JSON(http.StatusOK, user)
 }
 
 func UserStarredRepositories(ctx *gin.Context) {
@@ -32,7 +32,7 @@ func UserStarredRepositories(ctx *gin.Context) {
 		ctx.JSON(http.StatusUnauthorized, gin.H{"status": "fail", "message": "Failed to get user repositories!"})
 		return
 	}
-	ctx.JSON(http.StatusOK, gin.H{"status": "success", "repos": repos})
+	ctx.JSON(http.StatusOK, repos)
 }
 
 func RepositoryCommits(ctx *gin.Context) {
@@ -49,5 +49,5 @@ func RepositoryCommits(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{"status": "success", "commits": commits})
+	ctx.JSON(http.StatusOK, commits)
 }

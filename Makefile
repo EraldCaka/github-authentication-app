@@ -18,3 +18,6 @@ create-migration-sql:
 
 migrate-force-version:
 	@migrate -path ./db/migrations -database "$(DB_LINK)" -verbose force 20240224023216
+
+tidy:
+	go mod tidy

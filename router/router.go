@@ -5,9 +5,11 @@ import (
 	"github.com/EraldCaka/github-authentication-app/db"
 	"github.com/EraldCaka/github-authentication-app/internal/handlers"
 	"github.com/EraldCaka/github-authentication-app/internal/middleware"
+	"github.com/EraldCaka/github-authentication-app/util"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"log"
+	"net/http"
 	"time"
 )
 
@@ -28,7 +30,7 @@ func InitRouter() {
 		ExposeHeaders:    []string{"Content-Length"},
 		AllowCredentials: true,
 		AllowOriginFunc: func(origin string) bool {
-			return origin == "http://localhost:5174" //react app
+			return true
 		},
 		MaxAge: 12 * time.Hour,
 	}))
@@ -54,6 +56,13 @@ func InitRouter() {
 	})
 	r.GET("/oauth/db/commits", func(ctx *gin.Context) {
 		handlers.GetCommits(ctx, dbConn)
+	})
+	r.GET("/oauth/clientID", func(ctx *gin.Context) {
+		if util.CLIENT_ID == "" {
+			ctx.JSON(http.StatusUnauthorized, "Error finding clientID")
+			return
+		}
+		ctx.JSON(http.StatusOK, util.CLIENT_ID)
 	})
 }
 

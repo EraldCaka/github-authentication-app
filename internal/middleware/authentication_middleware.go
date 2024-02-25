@@ -7,7 +7,7 @@ import (
 )
 
 func Authorization(ctx *gin.Context) {
-	if ctx.Request.URL.Path == "/oauth" {
+	if ctx.Request.URL.Path == "/oauth" || ctx.Request.URL.Path == "/oauth/clientID" {
 		ctx.Next()
 		return
 	}
