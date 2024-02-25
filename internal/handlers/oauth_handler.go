@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"github.com/EraldCaka/github-authentication-app/internal/services"
+	"github.com/EraldCaka/github-authentication-app/util"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -36,5 +37,5 @@ func GitHubOAuth(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadGateway, gin.H{"status": "fail", "message": "Failed to store user data in the db"})
 		return
 	}
-	ctx.Redirect(http.StatusFound, "http://localhost:5173/user")
+	ctx.Redirect(http.StatusFound, util.ClientUserURI)
 }

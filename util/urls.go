@@ -6,6 +6,7 @@ import "fmt"
 // const AuthUrl = "https://github.com/login/oauth/authorize"
 const TokenUrl = "https://github.com/login/oauth/access_token"
 const UserUrI = "https://api.github.com/user"
+const ClientUserURI = "http://localhost:5173/user"
 
 var StarredRepos = func(name string) string {
 	return fmt.Sprintf("https://api.github.com/users/%v/starred", name)
