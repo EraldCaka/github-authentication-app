@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/EraldCaka/github-authentication-app/internal/types"
 	"log"
+	"time"
 )
 
 func (pg *Postgres) CreateUser(ctx context.Context, u *types.UserReq) (int, error) {
@@ -23,7 +24,6 @@ func (pg *Postgres) CreateCommit(ctx context.Context, commit *types.CommitReq) e
 	query := fmt.Sprintf("INSERT INTO public.commits (commit_sha, date, repo_id) VALUES ('%v','%v','%v')RETURNING id", commit.CommitSHA, formattedDateStr, commit.RepoID)
 	var commitID int
 	err := pg.db.QueryRow(ctx, query).Scan(&commitID)
-
 	if err != nil {
 		log.Printf("Unable to insert commit: %v\n", err)
 		return err
@@ -42,6 +42,20 @@ func (pg *Postgres) CreateRepository(ctx context.Context, repository *types.Repo
 	}
 
 	return repoID, nil
+}
+
+func (pg *Postgres) GetLatestCommit(ctx context.Context, repoID int) (*time.Time, error) {
+	var latestDate time.Time
+
+	query := fmt.Sprintf("SELECT MAX(date) FROM commits WHERE repo_id = %d", repoID)
+
+	err := pg.db.QueryRow(ctx, query).Scan(&latestDate)
+	if err != nil {
+		log.Printf("Error retrieving latest commit date: %v\n", err)
+		return nil, err
+	}
+
+	return &latestDate, nil
 }
 
 func (pg *Postgres) GetUserByID(ctx context.Context, userID string) *types.UserDB {

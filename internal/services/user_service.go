@@ -9,8 +9,6 @@ import (
 	"github.com/EraldCaka/github-authentication-app/db"
 	"github.com/EraldCaka/github-authentication-app/internal/types"
 	"github.com/EraldCaka/github-authentication-app/util"
-	"log"
-
 	"io"
 	"net/http"
 	"time"
@@ -134,12 +132,7 @@ func GetRepositoryCommits(accessToken string, name string, repo string) ([]*type
 
 	return CommitResp, nil
 }
-func PopulateDBWithCurrentlyRegisteredUser(ctx context.Context, accessToken string, user *types.User) error {
-	dbConn, err := db.NewPGInstance(ctx)
-	if err != nil {
-		log.Fatalf("could not initialize database connection: %s", err)
-		return err
-	}
+func PopulateDBWithCurrentlyRegisteredUser(ctx context.Context, accessToken string, user *types.User, dbConn *db.Postgres) error {
 
 	userReq := &types.UserReq{
 		Name:     user.Login,
@@ -170,7 +163,6 @@ func PopulateDBWithCurrentlyRegisteredUser(ctx context.Context, accessToken stri
 		commits, err := GetRepositoryCommits(accessToken, repoReq.RepoOwner, repoReq.RepoName)
 
 		for _, commit := range commits {
-
 			commitReq := &types.CommitReq{
 				CommitSHA: commit.SHA,
 				Date:      types.DateParsing(commit.Commit.Author.Date),

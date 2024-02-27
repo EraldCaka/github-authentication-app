@@ -4,7 +4,7 @@ export
 build:
 	@go build -o bin/api cmd/main.go
 
-run: build drop migrate
+run:drop migrate build
 	@./bin/api
 
 migrate:
@@ -21,3 +21,7 @@ migrate-force-version:
 
 tidy:
 	go mod tidy
+
+worker:
+	@go build -o bin/worker cmd/worker.go
+	@./bin/worker

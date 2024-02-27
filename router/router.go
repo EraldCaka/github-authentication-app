@@ -24,7 +24,7 @@ func InitRouter() {
 	}
 
 	r.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"http://localhost:5174"},
+		AllowOrigins:     []string{"http://localhost:5173"},
 		AllowMethods:     []string{"GET", "POST"},
 		AllowHeaders:     []string{"Content-Type"},
 		ExposeHeaders:    []string{"Content-Length"},

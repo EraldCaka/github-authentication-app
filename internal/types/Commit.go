@@ -99,3 +99,13 @@ func DateParsing(dateStr string) time.Time {
 	}
 	return date
 }
+
+func DateParsingToString(dateStr string) string {
+	date, err := time.Parse(time.RFC3339, dateStr)
+	formattedDate := date.Format("2006-01-02T15:04:05Z07:00")
+	if err != nil {
+		log.Printf("Error parsing date: %v\n", err)
+		return ""
+	}
+	return formattedDate
+}

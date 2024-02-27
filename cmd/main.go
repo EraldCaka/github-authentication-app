@@ -8,5 +8,5 @@ import (
 func main() {
 	util.InitEnvironmentVariables()
 	router.InitRouter()
-	router.Start("0.0.0.0:5000")
+	router.Start("0.0.0.0:5555")
 }

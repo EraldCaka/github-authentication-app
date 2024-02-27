@@ -9,6 +9,7 @@ import (
 
 func LogoutUser(ctx *gin.Context) {
 	ctx.SetCookie("jwt", "", -1, "", "", false, false)
+	util.ClearActiveToken()
 	ctx.JSON(http.StatusOK, gin.H{"status": "success"})
 }
 func GitHubOAuth(ctx *gin.Context) {
@@ -18,24 +19,12 @@ func GitHubOAuth(ctx *gin.Context) {
 		ctx.JSON(http.StatusUnauthorized, gin.H{"status": "fail", "message": "Authorization code not provided!"})
 		return
 	}
-
 	tokenRes, err := services.GetGitHubOauthToken(code)
 	if err != nil {
 		ctx.JSON(http.StatusBadGateway, gin.H{"status": "fail", "message": "Failed to retrieve OAuth token"})
 		return
 	}
-
-	githubUser, err := services.GetGitHubUser(tokenRes.Access_token)
-
 	ctx.SetCookie("Authorization", tokenRes.Access_token, 60*60*24, "/", "localhost", false, false)
-	if err != nil {
-		ctx.JSON(http.StatusBadGateway, gin.H{"status": "fail", "message": "Failed to retrieve user information from GitHub"})
-		return
-	}
-	err = services.PopulateDBWithCurrentlyRegisteredUser(ctx, tokenRes.Access_token, githubUser)
-	if err != nil {
-		ctx.JSON(http.StatusBadGateway, gin.H{"status": "fail", "message": "Failed to store user data in the db"})
-		return
-	}
+	util.SetActiveToken(tokenRes.Access_token)
 	ctx.Redirect(http.StatusFound, util.ClientUserURI)
 }
