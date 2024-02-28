@@ -42,8 +42,17 @@ func GetCommitByID(ctx *gin.Context, dbConn *db.Postgres) {
 	commitID := ctx.Param("commitID")
 	commit := dbConn.GetCommitByID(ctx, commitID)
 	if commit == nil {
-		ctx.JSON(http.StatusUnauthorized, gin.H{"status": "fail", "message": "Failed to get repo from DB"})
+		ctx.JSON(http.StatusUnauthorized, gin.H{"status": "fail", "message": "Failed to get commit from DB"})
 
 	}
 	ctx.JSON(http.StatusOK, gin.H{"status": "success", "repository": commit})
+}
+func GetCommitByRepoID(ctx *gin.Context, dbConn *db.Postgres) {
+	repoID := ctx.Param("repoID")
+	commits, err := dbConn.GetCommitsByRepoID(ctx, repoID)
+	if err != nil {
+		ctx.JSON(http.StatusUnauthorized, gin.H{"status": "fail", "message": "Failed to get commits from DB"})
+	}
+	ctx.JSON(http.StatusOK, commits)
+
 }

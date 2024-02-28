@@ -155,3 +155,31 @@ func (pg *Postgres) GetCommitByID(ctx context.Context, commitID string) *types.C
 	}
 	return &commit
 }
+func (pg *Postgres) GetCommitsByRepoID(ctx context.Context, repoID string) ([]types.CommitDB, error) {
+	var commits []types.CommitDB
+
+	query := fmt.Sprintf("SELECT * FROM public.commits WHERE repo_id = %v", repoID)
+	rows, err := pg.db.Query(ctx, query)
+	if err != nil {
+		log.Printf("Error querying commits: %v\n", err)
+		return nil, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var commit types.CommitDB
+		err := rows.Scan(&commit.ID, &commit.CommitSHA, &commit.Date, &commit.RepoID)
+		if err != nil {
+			log.Printf("Error scanning commit row: %v\n", err)
+			continue
+		}
+		commits = append(commits, commit)
+	}
+
+	if err := rows.Err(); err != nil {
+		log.Printf("Error iterating over commit rows: %v\n", err)
+		return nil, err
+	}
+
+	return commits, nil
+}

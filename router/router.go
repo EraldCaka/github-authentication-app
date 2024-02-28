@@ -57,6 +57,9 @@ func InitRouter() {
 	r.GET("/oauth/db/commits", func(ctx *gin.Context) {
 		handlers.GetCommits(ctx, dbConn)
 	})
+	r.GET("/oauth/db/commits/:repoID", func(ctx *gin.Context) {
+		handlers.GetCommitByRepoID(ctx, dbConn)
+	})
 	r.GET("/oauth/clientID", func(ctx *gin.Context) {
 		if util.CLIENT_ID == "" {
 			ctx.JSON(http.StatusUnauthorized, "Error finding clientID")
