@@ -19,7 +19,7 @@ func InitEnvironmentVariables() {
 		log.Fatal(err)
 	}
 
-	DB_URL = os.Getenv("DB_URL")
+	DB_URL = os.Getenv("DB_URL_API")
 	CLIENT_ID = os.Getenv("CLIENT_ID")
 	CLIENT_SECRET = os.Getenv("CLIENT_SECRET")
 	ACTIVE_TOKEN = os.Getenv("ACTIVE_TOKEN")

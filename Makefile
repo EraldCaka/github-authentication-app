@@ -4,7 +4,7 @@ export
 build:
 	@go build -o bin/api cmd/main.go
 
-run:drop migrate build
+run:
 	@./bin/api
 
 migrate:
@@ -25,3 +25,9 @@ tidy:
 worker:
 	@go build -o bin/worker cmd/worker.go
 	@./bin/worker
+
+docker-up:
+	docker-compose up --build
+
+docker-down:
+	docker-compose down

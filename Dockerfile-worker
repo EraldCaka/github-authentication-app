@@ -1,0 +1,11 @@
+FROM golang:latest
+
+WORKDIR /worker
+
+COPY . .
+
+RUN make tidy
+
+EXPOSE 5550
+
+CMD make worker
