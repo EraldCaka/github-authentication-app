@@ -12,8 +12,8 @@ An api that connects with github's api via github's Oauth service
 ## Setup Local Environment 
 
    1. Create in root directory ```.env``` and ```token.env``` files
-   2. ```token.env``` has one parameter ``ACTIVE_TOKEN`` which shouldn't be filled by default
-      3. ```.env``` has the following parameters 
+   2. ```token.env``` has one parameter ``ACTIVE_TOKEN`` which shouldn't be filled by default   
+   3. ```.env``` has the following parameters 
          1. ``DB_URL`` will contain the db url for the migration file it will have this format 
       
          ``postgres://username:password@host:port/database?host=/var/run/postgresql/data&sslmode=disable``
