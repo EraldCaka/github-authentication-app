@@ -17,7 +17,9 @@ An api that connects with github's api via github's Oauth service
          1. ``DB_URL`` will contain the db url for the migration file it will have this format 
       
          ``postgres://username:password@host:port/database?host=/var/run/postgresql/data&sslmode=disable``
+      
          2. ``CLIENT_ID`` will contain  client ID from the Oauth2.0 application of Github
+         
          3. ``DB_URL_API`` will contain the database url that the dockerized api will access
          
             ``postgres://username:password@host:port/databasename``
