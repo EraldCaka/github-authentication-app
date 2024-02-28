@@ -20,6 +20,9 @@ func main() {
 		log.Fatalf("could not initialize database connection: %s", err)
 		return
 	}
+	/*
+		will repeat the process every one hour
+	*/
 	ticker := time.NewTicker(1 * time.Hour)
 	defer ticker.Stop()
 	fmt.Println("worker has started...")

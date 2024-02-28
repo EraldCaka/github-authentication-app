@@ -26,8 +26,8 @@ worker:
 	@go build -o bin/worker cmd/worker.go
 	@./bin/worker
 
-docker-up:
+up:
 	docker-compose up --build
 
-docker-down:
+down:
 	docker-compose down
