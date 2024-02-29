@@ -106,11 +106,24 @@ func (pg *Postgres) GetRepoByID(ctx context.Context, repoID string) *types.Repos
 	row := pg.db.QueryRow(ctx, query)
 	var repoDB types.RepositoryDB
 
-	err := row.Scan(&repoDB.ID, &repoDB.RepoName, &repoDB.RepoOwner)
+	err := row.Scan(&repoDB.ID, &repoDB.RepoName, &repoDB.RepoOwner, &repoDB.UserId)
 	if err != nil {
 		log.Printf("Error scanning commit data: %v\n", err)
 		return &types.RepositoryDB{}
 	}
+	return &repoDB
+}
+func (pg *Postgres) GetRepoByName(ctx context.Context, name string) *types.RepositoryDB {
+	query := fmt.Sprintf("SELECT * FROM public.starred_repos WHERE repo_name = '%v'", name)
+	row := pg.db.QueryRow(ctx, query)
+	var repoDB types.RepositoryDB
+	fmt.Println("row", row)
+	err := row.Scan(&repoDB.ID, &repoDB.UserId, &repoDB.RepoName, &repoDB.RepoOwner)
+	if err != nil {
+		log.Printf("Error scanning repository data: %v\n", err)
+		return &types.RepositoryDB{}
+	}
+	fmt.Println("repodb ", repoDB)
 	return &repoDB
 }
 

@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"fmt"
 	"github.com/EraldCaka/github-authentication-app/db"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -30,6 +31,16 @@ func GetRepoByID(ctx *gin.Context, dbConn *db.Postgres) {
 
 	}
 	ctx.JSON(http.StatusOK, gin.H{"status": "success", "repository": repository})
+}
+func GetRepoByName(ctx *gin.Context, dbConn *db.Postgres) {
+	name := ctx.Param("name")
+	fmt.Println(name)
+	repository := dbConn.GetRepoByName(ctx, name)
+	if repository == nil {
+		ctx.JSON(http.StatusUnauthorized, gin.H{"status": "fail", "message": "Failed to get repo from DB"})
+
+	}
+	ctx.JSON(http.StatusOK, repository)
 }
 func GetCommits(ctx *gin.Context, dbConn *db.Postgres) {
 	commits, err := dbConn.GetCommits(ctx)

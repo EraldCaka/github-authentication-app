@@ -48,6 +48,9 @@ func InitRouter() {
 	r.GET("/oauth/db/repo/:repoID", func(ctx *gin.Context) {
 		handlers.GetRepoByID(ctx, dbConn)
 	})
+	r.GET("/oauth/db/repoName/:name", func(ctx *gin.Context) {
+		handlers.GetRepoByName(ctx, dbConn)
+	})
 	r.GET("/oauth/db/commit/:commitID", func(ctx *gin.Context) {
 		handlers.GetCommitByID(ctx, dbConn)
 	})
